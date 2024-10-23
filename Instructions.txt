@@ -1,0 +1,51 @@
+Instructions for Running the Project
+
+
+1. Login and Registration:
+
+
+First, log in through the Login window.
+Only the admin has the ability to create new users. The Registration is provided for admins to create user accounts.
+Admin Credentials:
+Username: admin
+Password: 1234
+User Credentials:
+Username: user
+Password: 123456aA@
+
+
+2. User and Admin Privileges:
+
+Users can directly create, update, and delete courses, staff members, and subjects after logging in with the user credentials.
+Alternatively, you can log in as an admin using the credentials provided and manage these operations through the admin panel.
+
+
+3. Course, Staff, and Subject Setup:
+
+Step 1: After logging in, create a Course from the Course Management section.
+Step 2: Proceed to create Staff Members and assign their availability by selecting their working days.
+Step 3: Add Subjects to the system. Each subject must be associated with both a course and a staff member.
+
+
+4. Timetable Generation:
+
+After setting up courses, staff, and subjects, navigate to the Menu Page.
+You will see a list of courses. Next to each course, you will find a Generate Timetable button.
+Clicking this button will automatically generate a timetable for the selected course, based on staff availability.
+
+
+5. Manual Timetable Editing:
+
+Once the timetable is automatically generated, there is an option to manually edit each period. This feature allows administrators or users to make adjustments as needed.
+
+
+6. Course, Staff, and Subject Management:
+
+In the navigation bar at the top, you will find options for Course Management, Staff Management, and Subject Management.
+Clicking on any of these buttons will take you to the respective pages, where you can perform CRUD (Create, Read, Update, Delete) operations on courses, staff, and subjects.
+
+Key Features:
+
+Automatic Timetable Generation: Automatically generates a timetable for each course, ensuring no staff conflicts.
+Manual Timetable Adjustments: Edit periods manually after auto-generation.
+Comprehensive Management: Easy management of courses, staff, and subjects through the system's intuitive interface.

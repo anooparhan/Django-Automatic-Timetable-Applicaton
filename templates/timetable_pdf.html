@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable PDF</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .day-header {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ course.name }} - Timetable</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>Period 4</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day, periods in timetable.items %}
+            <tr>
+                <td class="day-header">{{ day }}</td>
+                {% for period in periods %}
+                    <td>
+                        {% if period %}
+                            Subject: {{ period.subject.name }}<br>
+                            Staff: {{ period.subject.staff.name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

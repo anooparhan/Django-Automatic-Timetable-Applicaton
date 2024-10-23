@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border: none; /* Remove border */
+            transition: transform 0.2s; /* Animation on hover */
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .btn-custom {
+            background-color: #28a745; /* Green */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #218838; /* Darker green */
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .nav-item {
+            margin-left: 10px; /* Space between navbar items */
+        }
+    </style>
+</head>
+<body>
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Subject Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn-custom" href="{% url 'course_list' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-custom" href="{% url 'add_subject' %}">Add Subject</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Subject List</h1>
+        <ul class="list-group">
+            {% for subject in subjects %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <p class="mb-0">{{ subject.name }}</p>
+                    <div>
+                        <a href="{% url 'edit_subject' subject.id %}" class="btn btn-info btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-subject-id="{{ subject.id }}" data-subject-name="{{ subject.name }}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+ 
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the subject "<span id="subjectName"></span>"?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" action="{% url 'delete_subject' 0 %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="subject_id" id="subjectId" value="">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+       
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); 
+            var subjectId = button.data('subject-id'); 
+            var subjectName = button.data('subject-name'); 
+    
+            
+            var modal = $(this);
+            modal.find('#subjectName').text(subjectName);
+            modal.find('#subjectId').val(subjectId);
+    
+            
+            modal.find('form').attr('action', '/subjects/delete/' + subjectId + '/');
+        });
+    </script>
+    
+</body>
+</html>

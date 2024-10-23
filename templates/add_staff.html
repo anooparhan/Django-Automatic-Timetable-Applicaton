@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Staff</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border: none; /* Remove border */
+        }
+        .card-header {
+            background-color: #28a745; /* Green */
+            color: white;
+        }
+        .btn-save {
+            background-color: #28a745; /* Green */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-save:hover {
+            background-color: #218838; /* Darker green */
+        }
+        .btn-back {
+            background-color: #007bff; /* Blue */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-back:hover {
+            background-color: #0056b3; /* Darker blue */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Add Staff</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-right mb-3">
+                    <a href="{% url 'staff_list' %}" class="btn btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to Staff List
+                    </a>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-save">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

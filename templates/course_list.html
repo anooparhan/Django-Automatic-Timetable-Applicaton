@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f9f9f9 30%, #28a745 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: #343a40;
+            transition: background-color 0.5s ease;
+        }
+
+        .navbar-custom:hover {
+            background-color: #2d3238;
+        }
+
+        .navbar-brand {
+            color: #ffffff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff;
+            background-color: #28a745;
+            border-radius: 5px;
+            padding: 5px 15px;
+            margin-left: 5px;
+            transition: background-color 0.3s ease, transform 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        .hero-section {
+            height: 300px;
+            background: url('https://source.unsplash.com/1600x900/?education,school') no-repeat center center;
+            background-size: cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: zoomIn 1s ease-in-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-success {
+            transition: background-color 0.3s ease, transform 0.3s;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Animation for table rows */
+        .table-row {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Toast Notification Style */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1050; /* Above other content */
+            width: 300px;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">Timetable Generator Application</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'course_lists' %}">Course Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'staff_list' %}">Staff Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'subject_list' %}">Subject Management</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+    <div class="container">
+        <h1 class="text-center mt-4">Courses</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped table-hover mt-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Course Name</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTable">
+                        {% for course in courses %}
+                        <tr class="table-row">
+                            <td>{{ course.name }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'generate_auto_timetable' course.id %}" class="btn btn-success btn-sm">Generate Timetable</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="toast bg-success text-white" role="alert" aria-live="polite" aria-atomic="true" id="welcomeToast" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">Welcome!</strong>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close" style="background-color: red; border: none; padding: 0.5rem;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Welcome to the Timetable Generator Application! We're glad to have you here.
+        </div>
+    </div>
+
+    <audio id="welcomeAudio" src="{% static 'login.mp3' %}" preload="auto"></audio>
+
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      
+        document.querySelectorAll('.table-row').forEach((row, index) => {
+            row.style.animationDelay = `${index * 0.1}s`;
+        });
+
+       
+        $(document).ready(function() {
+            $('#welcomeToast').css('opacity', '1').toast('show');
+
+            $('#welcomeToast').on('click', function() {
+                var audio = document.getElementById('welcomeAudio');
+                audio.play().catch(function(error) {
+                    console.log('Audio playback failed:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.name }} Timetable</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the timetable */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #343a40;
+            font-weight: 700;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table td strong {
+            color: #495057;
+        }
+
+        .mt-4 {
+            margin-top: 2rem !important;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">{{ course.name }} Timetable</h1>
+          
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            
+           
+            <a href="{% url 'course_list' %}" class="btn btn-success mb-2">Back to Courses</a>
+
+            <a href="{% url 'download_timetable_pdf' course.id %}" class="btn btn-info mb-2">Download Timetable as PDF</a>
+        </form>
+        
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Day</th>
+                    <th scope="col">Period 1</th>
+                    <th scope="col">Period 2</th>
+                    <th scope="col">Period 3</th>
+                    <th scope="col">Period 4</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day, periods in timetable.items %}
+                <tr>
+                    <td class="font-weight-bold">{{ day }}</td>
+                    {% for period in periods %}
+                        <td>
+                            {% if period %}
+                                <strong>Subject:</strong> {{ period.subject.name }}<br>
+                                <strong>Staff:</strong> {{ period.subject.staff.name }}<br>
+                                <a href="{% url 'edit_timetable_entry' period.id %}" class="btn btn-primary btn-sm mt-2">Edit</a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            &copy; {{ current_year }} Your School Name. All Rights Reserved.
+        </div>
+    </div>
+
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
